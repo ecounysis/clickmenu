@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+  <head>
+    <title>clickmenu demo - jQuery plugin</title>
+    <script type="text/javascript" language="javascript" src="http://ericsbasementoffice.com/jsf/jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="clickmenu.js"></script>
+    <script type="text/javascript" language="javascript">
+      var one = {"text":"Option 1", "callback":function(){ alert("option 1 chosen");} };
+      var two = {"text":"Option 2", "callback":function(){ alert("option 2 chosen");} };
+      var three = {"text":"The third option", "callback":function() { var t = Date(); $("#test").append("<br/>" + t)} };
+      $(function() {
+          $("#test").clickmenu([one,two,three]);
+        });
+    </script>
+  </head>
+  <body>
+    <div id="test">Click Here For A Demo!</div>
+  </body>
+</html>
+

@@ -38,7 +38,7 @@
           $(selector).css("background-color", color1);
           $(selector).css("color", color2);
       });
-    }
+    };
     
     var setCallback = function(inner_id, selector, func) {
       $("#" + inner_id ).click(
@@ -46,7 +46,7 @@
           $(selector).remove();
           func();
       });
-    }
+    };
     
     this.click(function(evt) {
       var menu_color = "#DADADD";
@@ -70,7 +70,7 @@
         $("#" + inner_id).text(arr[i].text);
         var obj = arr[i];
         setCallback(inner_id, selector, obj.callback);
-      }
+      };
 
       $(".sub_menu").each(function(i, element) {
         $(element).css({ "height": "14px", "width": "125px" });

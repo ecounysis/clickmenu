@@ -1,7 +1,7 @@
 /*
- * clickmenu jQuery JavaScript Plugin v0.0.1
+ * clickmenu jQuery JavaScript Plugin v0.2
  *
- * Copyright 2010, Eric Christensen
+ * Copyright 2013, Eric Christensen
  * 
  * Permission to use, copy, modify, and distribute this software and its 
  * documentation for any purpose and without fee is hereby granted, provided 
@@ -22,64 +22,76 @@
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN 
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  * 
- * Date: Wed Dec 08 2010 01:08:38 GMT-0700
+ * Date: Thu Jun 20 2013 17:23:33 GMT-0600
  *
  */
 
-(function($) {
-  $.fn.clickmenu = function(arr) {
-    var SetToggleColors = function(selector, color1, color2) {
-      $(selector).hover(
-        function() {
-          $(selector).css("background-color", color2);
-          $(selector).css("color", color1);
-        }, 
-        function() {
-          $(selector).css("background-color", color1);
-          $(selector).css("color", color2);
-      });
-    };
-    
-    var setCallback = function(inner_id, selector, func) {
-      $("#" + inner_id ).click(
-        function(evt) {
-          $(selector).remove();
-          func();
-      });
-    };
-    
-    this.click(function(evt) {
-      var menu_color = "#DADADD";
-      var div_id = "_" + Math.floor(Math.random()*99999999) + "_sub_menu";
-      var selector = "#" + div_id;
-      $("body").append("<div id=\""+div_id+"\"/>");
-      var ht = arr.length*20 + 4
-      ht += " px"
-      $(selector).css({ "background-color": menu_color, 
-        "border": "2px solid Gray",
-        "height": ht, "width": "125px" });
-      $(selector).mouseleave(function() { $(selector).remove(); });
-      $(selector).css({ "position": "absolute", 
-        "left": evt.pageX - 10, "top": evt.pageY - 10, 
-        "font-family": "Arial,Calibri", "font-size": "8pt", "opacity": 1 });
-      
-      var di = Math.floor(Math.random()*99999999);
-      for (var i=0; i < arr.length; i++) {
-        var inner_id = "_" + di++ + "_sub_menu";
-        $(selector).append("<div class=\"sub_menu\" id=\"" + inner_id + "\"/>")
-        $("#" + inner_id).text(arr[i].text);
-        var obj = arr[i];
-        setCallback(inner_id, selector, obj.callback);
-      };
+(function ($) {
+    $.fn.clickmenu = function (the_object) {
+      /*
+        Accepts an object containing an array (called items) 
+        of objects with text and callback properties.
+        The text is displayed on the menu.
+        The callback is executed when the menu item is selected.
+        Here is an example object you could send to clickmenu.
+          {items:
+            [
+              {text:"aaaa", callback:function(){} },
+              {text:"bbbb", callback:function(){} },
+              {text:"cccc", callback:function(){} }
+            ]
+          }
+        Put these three classes in your CSS to style your menu:
+          clickmenu
+          clickmenu-enter
+          clickmenu-leave
+        */
+        
+        var arr = the_object.items;
+        var addToggleClass = function (selector, enter, leave) {
+            $(selector).hover(
+                function () {
+                    $(selector).addClass(enter);
+                    $(selector).removeClass(leave);
+                },
+                function () {
+                    $(selector).addClass(leave);
+                    $(selector).removeClass(enter);
+                });
+        };
 
-      $(".sub_menu").each(function(i, element) {
-        $(element).css({ "height": "14px", "width": "125px" });
-        SetToggleColors($(element), menu_color, "black");
-      });
-    });
-  }
+        var setCallback = function (inner_id, selector, func) {
+            $("#" + inner_id).click(
+                function (evt) {
+                    $(selector).remove();
+                    func();
+                });
+        };
 
-  return this;
+        this.click(function (evt) {
+            var div_id = "_" + Math.floor(Math.random() * 99999999) + "_sub_menu";
+            var selector = "#" + div_id;
+            $("body").append("<div id=\"" + div_id + "\" class=\"clickmenu\" />");
+            $(selector).mouseleave(function () { $(selector).remove(); });
+            $(selector).css({ "position": "absolute",
+                "left": evt.pageX - 10, "top": evt.pageY - 10,
+                "font-size": "-1", "opacity": 1
+            });
+
+            var di = Math.floor(Math.random() * 99999999);
+            for (var i = 0; i < arr.length; i++) {
+                var inner_id = "_" + di++ + "_sub_menu";
+                $(selector).append("<div class=\"sub_menu clickmenu-leave\" id=\"" + inner_id + "\"/>")
+                $("#" + inner_id).text(arr[i].text);
+                var obj = arr[i];
+                setCallback(inner_id, selector, obj.callback);
+            };
+            $(".sub_menu").each(function (i, element) {
+                addToggleClass($(element), "clickmenu-enter", "clickmenu-leave");
+            });
+        });
+    }
+
+    return this;
 
 })(jQuery);
-

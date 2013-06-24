@@ -80,7 +80,7 @@
 
             var di = Math.floor(Math.random() * 99999999);
             for (var i = 0; i < arr.length; i++) {
-                var inner_id = "_" + di++ + "_sub_menu";
+                var inner_id = "_" + (di++) + "_sub_menu";
                 $(selector).append("<div class=\"sub_menu clickmenu-leave\" id=\"" + inner_id + "\"/>")
                 $("#" + inner_id).text(arr[i].text);
                 var obj = arr[i];
